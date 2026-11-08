@@ -1,0 +1,26 @@
+# Gradle / build output
+build/
+.gradle/
+out/
+
+# Forge dev runtime
+run/
+run-data/
+logs/
+src/generated/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.eclipse/
+.settings/
+.classpath
+.project
+
+# Python bytecode from tools/
+__pycache__/
+*.pyc
+
+# Local before-change copies of the whole project; not part of the repository
+brama-snapshots/

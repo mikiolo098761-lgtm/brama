@@ -1,0 +1,21 @@
+{
+  "__comment": "The whole bridge deck. Drawn ONCE and stretched over the footprint, so keep it simple. This is the piece you WALK ON: it must stay within z 0-4, because the collision slab the game uses is 4px thick and geometry outside it looks like it floats. x runs across the bridge, y along it. UVs are ignored -- the renderer projects the gate's texture across this geometry.",
+  "textures": {
+    "deck": "brama:gate/deck",
+    "particle": "#deck"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 4],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#deck" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#deck" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#deck" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#deck" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#deck" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#deck" }
+      }
+    }
+  ]
+}

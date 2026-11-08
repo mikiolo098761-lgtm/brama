@@ -1,0 +1,16 @@
+{
+  "__comment": "The one tool that assembles a gate, so it is worth real iron. It wears out -- see durability in the config.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ISI",
+    " S "
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "brama:gate_hammer"
+  }
+}

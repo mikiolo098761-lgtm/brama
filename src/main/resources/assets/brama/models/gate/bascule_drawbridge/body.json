@@ -1,0 +1,4 @@
+{
+  "__comment": "The bascule uses the same deck as the plain drawbridge. Give this file its own elements if you ever want the two to differ.",
+  "parent": "brama:gate/drawbridge/body"
+}

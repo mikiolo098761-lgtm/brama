@@ -1,0 +1,21 @@
+{
+  "__comment": "A timber deck with the two chains that hoist it.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LCL",
+    "LLL",
+    "LCL"
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:cherry_logs"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    }
+  },
+  "result": {
+    "item": "brama:cherry_drawbridge",
+    "count": 4
+  }
+}

@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "brama:block/medieval_gate_damage3"
+  }
+}

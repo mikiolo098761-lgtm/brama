@@ -1,0 +1,6 @@
+{
+  "__comment": "The artwork stops at stage 3; the last stage reuses it, exactly as GateTextures does for the gate itself.",
+  "textures": {
+    "particle": "brama:gate/deck_damage3"
+  }
+}

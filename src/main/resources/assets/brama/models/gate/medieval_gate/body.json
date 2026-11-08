@@ -1,0 +1,22 @@
+{
+  "__comment": "One gate leaf. Drawn ONCE per leaf and stretched to the leaf's size, so keep it simple: anything fussy in here gets smeared across the whole leaf. Depth is the point, detail is not. UVs below are ignored at render time -- the renderer projects the gate's own texture across this geometry -- so you only need to worry about shape.",
+  "textures": {
+    "panel": "brama:gate/wooden",
+    "particle": "#panel"
+  },
+  "elements": [
+    {
+      "__comment": "The leaf itself: a 4px slab centred on the gate plane.",
+      "from": [0, 0, 6],
+      "to": [16, 16, 10],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#panel" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#panel" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#panel" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#panel" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#panel" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#panel" }
+      }
+    }
+  ]
+}

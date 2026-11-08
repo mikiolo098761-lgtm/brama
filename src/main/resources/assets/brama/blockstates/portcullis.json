@@ -1,0 +1,14 @@
+﻿{
+  "variants": {
+    "assembled=false,damage=0": { "model": "brama:block/portcullis" },
+    "assembled=false,damage=1": { "model": "brama:block/portcullis_damage1" },
+    "assembled=false,damage=2": { "model": "brama:block/portcullis_damage2" },
+    "assembled=false,damage=3": { "model": "brama:block/portcullis_damage3" },
+    "assembled=false,damage=4": { "model": "brama:block/portcullis_damage4" },
+    "assembled=true,damage=0": { "model": "brama:block/portcullis_empty" },
+    "assembled=true,damage=1": { "model": "brama:block/portcullis_empty_damage1" },
+    "assembled=true,damage=2": { "model": "brama:block/portcullis_empty_damage2" },
+    "assembled=true,damage=3": { "model": "brama:block/portcullis_empty_damage3" },
+    "assembled=true,damage=4": { "model": "brama:block/portcullis_empty_damage4" }
+  }
+}

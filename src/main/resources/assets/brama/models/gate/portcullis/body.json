@@ -1,0 +1,61 @@
+{
+  "__comment": "One block cell of the portcullis lattice, TILED rather than stretched -- a grate is defined by its gaps and they must land on block boundaries. Bars and rails both sit on an 8px pitch, which makes the openings square like a real portcullis. Rails are deliberately at y 4 and 12 rather than 0 and 8: nothing then lands on the cell's bottom edge, so the foot of the gate ends in bar ends instead of a flat bar running across it. UVs are ignored -- the renderer projects the gate's texture across the whole grid.",
+  "textures": {
+    "bar": "brama:gate/portcullis",
+    "particle": "#bar"
+  },
+  "elements": [
+    {
+      "__comment": "Vertical bar on the cell edge. Its neighbour one cell over completes the 8px pitch.",
+      "from": [0, 0, 6],
+      "to": [2, 16, 10],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bar" }
+      }
+    },
+    {
+      "__comment": "Vertical bar, mid cell.",
+      "from": [8, 0, 6],
+      "to": [10, 16, 10],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bar" }
+      }
+    },
+    {
+      "__comment": "Lower rail. Thinner in z than the bars so the verticals stay in front.",
+      "from": [0, 4, 7],
+      "to": [16, 6, 9],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bar" }
+      }
+    },
+    {
+      "__comment": "Upper rail.",
+      "from": [0, 12, 7],
+      "to": [16, 14, 9],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bar" }
+      }
+    }
+  ]
+}

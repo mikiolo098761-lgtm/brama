@@ -1,0 +1,6 @@
+{
+  "__comment": "Stitches everything under brama's textures/gate/ onto the block atlas. Must live in the MINECRAFT namespace, not brama's: an atlas is configured from assets/<atlas namespace>/atlases/<atlas name>.json, and the block atlas is minecraft:blocks. Every pack's copy of this path is merged, which is how a mod contributes. Vanilla already covers textures/block/ this way, so only textures/gate/ needs adding. A directory source rather than a list of files on purpose: drop a PNG in and it is picked up, with no entry to add here and no error for the ones you have not made.",
+  "sources": [
+    { "type": "minecraft:directory", "source": "gate", "prefix": "gate/" }
+  ]
+}

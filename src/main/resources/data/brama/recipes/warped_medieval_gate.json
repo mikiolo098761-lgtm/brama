@@ -1,0 +1,21 @@
+{
+  "__comment": "Timber banded with iron. Yields 4 because gates are built by the dozen -- the smallest is 6 blocks and a 7x9 is 63.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LIL",
+    "LIL",
+    "LIL"
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:warped_stems"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "brama:warped_medieval_gate",
+    "count": 4
+  }
+}

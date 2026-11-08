@@ -1,0 +1,21 @@
+{
+  "__comment": "The closing bar down the gate's right-hand side, placed once per row on the LAST column only. Without it the rails run past the final bar and end in mid air -- the tiled cell puts a bar every 8px from its left edge, so the last one always falls short of the gate's far side. Same section as the bars in body.json.",
+  "textures": {
+    "bar": "brama:gate/portcullis",
+    "particle": "#bar"
+  },
+  "elements": [
+    {
+      "from": [14, 0, 6],
+      "to": [16, 16, 10],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#bar" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#bar" }
+      }
+    }
+  ]
+}

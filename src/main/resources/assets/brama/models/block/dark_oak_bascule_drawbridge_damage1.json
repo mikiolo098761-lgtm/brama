@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "brama:block/dark_oak_bascule_drawbridge_damage1"
+  }
+}

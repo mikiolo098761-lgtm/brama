@@ -1,0 +1,35 @@
+{
+  "__comment": "Iron cross-band across the deck. Placed once per column, on the first and last row of the bridge only, so the deck gets a banded end rather than a repeating pattern down its whole length.",
+  "textures": {
+    "detail": "brama:block/gate_detail",
+    "particle": "#detail"
+  },
+  "elements": [
+    {
+      "__comment": "Band on the walking face. Only 1px proud so it is not a trip hazard to look at.",
+      "from": [0, 4, 3],
+      "to": [16, 9, 5],
+      "faces": {
+        "north": { "uv": [0, 4, 16, 9], "texture": "#detail" },
+        "south": { "uv": [0, 4, 16, 9], "texture": "#detail" },
+        "east":  { "uv": [3, 4, 5, 9], "texture": "#detail" },
+        "west":  { "uv": [3, 4, 5, 9], "texture": "#detail" },
+        "up":    { "uv": [0, 3, 16, 5], "texture": "#detail" },
+        "down":  { "uv": [0, 3, 16, 5], "texture": "#detail" }
+      }
+    },
+    {
+      "__comment": "Matching band underneath.",
+      "from": [0, 4, -1],
+      "to": [16, 9, 1],
+      "faces": {
+        "north": { "uv": [0, 4, 16, 9], "texture": "#detail" },
+        "south": { "uv": [0, 4, 16, 9], "texture": "#detail" },
+        "east":  { "uv": [3, 4, 5, 9], "texture": "#detail" },
+        "west":  { "uv": [3, 4, 5, 9], "texture": "#detail" },
+        "up":    { "uv": [0, 3, 16, 5], "texture": "#detail" },
+        "down":  { "uv": [0, 3, 16, 5], "texture": "#detail" }
+      }
+    }
+  ]
+}

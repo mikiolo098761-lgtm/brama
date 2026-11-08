@@ -1,0 +1,36 @@
+{
+  "__comment": "The stub weight behind the pivot, balancing the arm. Placed once per arm, one block below the pivot, in the same centred frame as beam.json.",
+  "textures": {
+    "timber": "brama:gate/deck",
+    "detail": "brama:block/gate_detail",
+    "particle": "#timber"
+  },
+  "elements": [
+    {
+      "__comment": "Timber block.",
+      "from": [3, 4, 3],
+      "to": [13, 16, 13],
+      "faces": {
+        "north": { "uv": [3, 0, 13, 12], "texture": "#timber" },
+        "south": { "uv": [3, 0, 13, 12], "texture": "#timber" },
+        "east":  { "uv": [3, 0, 13, 12], "texture": "#timber" },
+        "west":  { "uv": [3, 0, 13, 12], "texture": "#timber" },
+        "up":    { "uv": [3, 3, 13, 13], "texture": "#timber" },
+        "down":  { "uv": [3, 3, 13, 13], "texture": "#timber" }
+      }
+    },
+    {
+      "__comment": "Iron strapping round its middle.",
+      "from": [2, 7, 2],
+      "to": [14, 11, 14],
+      "faces": {
+        "north": { "uv": [2, 7, 14, 11], "texture": "#detail" },
+        "south": { "uv": [2, 7, 14, 11], "texture": "#detail" },
+        "east":  { "uv": [2, 7, 14, 11], "texture": "#detail" },
+        "west":  { "uv": [2, 7, 14, 11], "texture": "#detail" },
+        "up":    { "uv": [2, 2, 14, 14], "texture": "#detail" },
+        "down":  { "uv": [2, 2, 14, 14], "texture": "#detail" }
+      }
+    }
+  ]
+}

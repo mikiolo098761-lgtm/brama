@@ -1,0 +1,17 @@
+{
+  "__comment": "All iron, as a grate should be: two ingots a block, which makes a full portcullis the most costly gate in the mod.",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "C": { "item": "minecraft:chain" }
+  },
+  "result": {
+    "item": "brama:portcullis",
+    "count": 4
+  }
+}

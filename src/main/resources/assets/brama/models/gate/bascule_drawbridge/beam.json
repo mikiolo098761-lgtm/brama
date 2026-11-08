@@ -1,0 +1,21 @@
+{
+  "__comment": "One block of support beam. Tiled along the arm from the pivot outwards, so the arm length is always a whole number of these. The renderer centres the cell on the pivot line, meaning the beam itself must sit in the middle of the model.",
+  "textures": {
+    "timber": "brama:gate/deck",
+    "particle": "#timber"
+  },
+  "elements": [
+    {
+      "from": [5, 0, 5],
+      "to": [11, 16, 11],
+      "faces": {
+        "north": { "uv": [5, 0, 11, 16], "texture": "#timber" },
+        "south": { "uv": [5, 0, 11, 16], "texture": "#timber" },
+        "east":  { "uv": [5, 0, 11, 16], "texture": "#timber" },
+        "west":  { "uv": [5, 0, 11, 16], "texture": "#timber" },
+        "up":    { "uv": [5, 5, 11, 11], "texture": "#timber" },
+        "down":  { "uv": [5, 5, 11, 11], "texture": "#timber" }
+      }
+    }
+  ]
+}
