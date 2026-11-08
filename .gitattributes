@@ -1,0 +1,10 @@
+# Check everything out with the line endings it was committed with. Without this, Git on Windows
+# converts text files to CRLF on checkout, which makes every file look modified to the next person
+# on Linux and fills the console with warnings on this one.
+* text=auto eol=lf
+
+# Binary, so Git must not touch them or try to diff them.
+*.png binary
+*.jar binary
+gradlew text eol=lf
+gradlew.bat text eol=crlf
