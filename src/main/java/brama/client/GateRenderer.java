@@ -85,6 +85,20 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
 
     /** Vanilla's chain sprite, already on the block atlas because the chain block uses it. */
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("minecraft", "block/chain");
+
+    /**
+     * The image the detail models author their timber against.
+     *
+     * <p>A detail piece keeps the UVs and the texture written into its own model, which is the whole
+     * point of it being a detail piece: a beam's ironwork has to land where the artist put it, not
+     * wherever a projection happens to drop it. The cost is that the model names one texture, and
+     * {@code bascule_drawbridge/beam.json} names the oak deck — so every wood's bascule used to grow
+     * oak beams above a spruce or crimson bridge.
+     *
+     * <p>So quads drawn against this image are re-pointed at the gate's own wood as they are emitted.
+     * See {@link SpriteSwap}.
+     */
+    private static final ResourceLocation AUTHORED_TIMBER = new ResourceLocation("brama", "gate/deck");
     /** Vanilla's chain model puts its two crossed planes in the leftmost 6 pixels of the sprite. */
     private static final float CHAIN_UV_SPAN = 3.0F;
     private static final float CHAIN_WIDTH = 3.0F / 16.0F;
@@ -166,8 +180,13 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
                     : (fallPositive ? -1.0F : 1.0F);
             boolean arms = drawbridge.hasSupportArms();
             GateModels.Kit kit = arms ? GateModels.BASCULE : GateModels.DRAWBRIDGE;
+            // The beams and the counterweight are detail pieces, so they carry the oak planking
+            // their model names unless they are pointed at this bridge's own wood.
+            SpriteSwap timber = SpriteSwap.of(sprite(AUTHORED_TIMBER),
+                    sprite(GateTextures.of(gate.textureFamily()).baseSprite(damage)));
 
-            renderDrawbridge(poseStack, consumer, sprite, light, size, progress, fallSign, arms, kit, shading);
+            renderDrawbridge(poseStack, consumer, sprite, light, size, progress, fallSign, arms, kit,
+                    shading, timber);
         } else {
             // Sign of the Y rotation that carries a leaf towards the positive end of the
             // perpendicular world axis. The Z case is inverted because the frame above maps local
@@ -325,7 +344,8 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
      */
     private void renderDrawbridge(PoseStack poseStack, VertexConsumer consumer, TextureAtlasSprite sprite,
                                   int light, GateSize size, float progress, float fallSign,
-                                  boolean supportArms, GateModels.Kit kit, Shading shading) {
+                                  boolean supportArms, GateModels.Kit kit, Shading shading,
+                                  SpriteSwap timber) {
         int width = size.width();
         int length = size.height();
         float angle = fallSign * progress * 90.0F;
@@ -348,8 +368,8 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
         // problem all over again.
         ResourceLocation batten = kit.piece(GateModels.BATTEN, size);
         for (int column = 0; column < width; column++) {
-            placeDetail(poseStack, consumer, light, deckShading, batten, column, 0.0F, 0.0F);
-            placeDetail(poseStack, consumer, light, deckShading, batten, column, length - 1.0F, 0.0F);
+            placeDetail(poseStack, consumer, light, deckShading, batten, timber, column, 0.0F, 0.0F);
+            placeDetail(poseStack, consumer, light, deckShading, batten, timber, column, length - 1.0F, 0.0F);
         }
         poseStack.popPose();
 
@@ -388,11 +408,12 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
 
             ResourceLocation beam = kit.piece(GateModels.BEAM, size);
             for (int block = 0; block < armBlocks; block++) {
-                placeDetail(poseStack, consumer, light, shading, beam,
+                placeDetail(poseStack, consumer, light, shading, beam, timber,
                         CENTRE_ON_PLANE, block, CENTRE_ON_PLANE);
             }
             placeDetail(poseStack, consumer, light, shading,
-                    kit.piece(GateModels.COUNTERWEIGHT, size), CENTRE_ON_PLANE, -1.0F, CENTRE_ON_PLANE);
+                    kit.piece(GateModels.COUNTERWEIGHT, size), timber,
+                    CENTRE_ON_PLANE, -1.0F, CENTRE_ON_PLANE);
             poseStack.popPose();
 
             chain(poseStack, consumer, chainSprite, light, shading,
@@ -428,12 +449,49 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
         }
     }
 
+    /**
+     * Repaints a detail piece's timber in the gate's own wood, by moving the quads that sample one
+     * image onto the matching place in another.
+     *
+     * <p>Both images are a single block's worth of planking, so the swap is a straight remap of the
+     * window the quad already samples: wherever on the oak deck a face sat, it sits in the same spot
+     * on the spruce one. That keeps every UV the artist authored — ironwork included, since those
+     * faces name a different texture and are left alone.
+     *
+     * @param from the image the model was authored against
+     * @param to   the image to draw from instead
+     */
+    private record SpriteSwap(TextureAtlasSprite from, TextureAtlasSprite to, float uScale, float vScale) {
+
+        /** @return null when the two are the same image, which is the oak case and most of the time. */
+        static SpriteSwap of(TextureAtlasSprite from, TextureAtlasSprite to) {
+            if (from == to) {
+                return null;
+            }
+            float uSpan = from.getU1() - from.getU0();
+            float vSpan = from.getV1() - from.getV0();
+            if (uSpan == 0.0F || vSpan == 0.0F) {
+                return null;
+            }
+            return new SpriteSwap(from, to, (to.getU1() - to.getU0()) / uSpan,
+                    (to.getV1() - to.getV0()) / vSpan);
+        }
+
+        float u(float u) {
+            return this.to.getU0() + (u - this.from.getU0()) * this.uScale;
+        }
+
+        float v(float v) {
+            return this.to.getV0() + (v - this.from.getV0()) * this.vScale;
+        }
+    }
+
     /** Draws a detail piece, keeping the UVs and texture authored into its own model. */
     private void placeDetail(PoseStack poseStack, VertexConsumer consumer, int light, Shading shading,
-                             ResourceLocation model, float x, float y, float z) {
+                             ResourceLocation model, SpriteSwap timber, float x, float y, float z) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
-        emitModel(poseStack, consumer, model, light, shading, null, null);
+        emitModel(poseStack, consumer, model, light, shading, null, null, timber);
         poseStack.popPose();
     }
 
@@ -443,16 +501,22 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
      */
     private void emitModel(PoseStack poseStack, VertexConsumer consumer, ResourceLocation model,
                            int light, Shading shading, Projection uv, TextureAtlasSprite sprite) {
+        emitModel(poseStack, consumer, model, light, shading, uv, sprite, null);
+    }
+
+    private void emitModel(PoseStack poseStack, VertexConsumer consumer, ResourceLocation model,
+                           int light, Shading shading, Projection uv, TextureAtlasSprite sprite,
+                           SpriteSwap timber) {
         BakedModel baked = GateModels.baked(model);
         PoseStack.Pose pose = poseStack.last();
 
         RANDOM.setSeed(QUAD_SEED);
         emitQuads(pose, consumer, baked.getQuads(null, null, RANDOM, ModelData.EMPTY, null),
-                light, shading, uv, sprite);
+                light, shading, uv, sprite, timber);
         for (Direction face : Direction.values()) {
             RANDOM.setSeed(QUAD_SEED);
             emitQuads(pose, consumer, baked.getQuads(null, face, RANDOM, ModelData.EMPTY, null),
-                    light, shading, uv, sprite);
+                    light, shading, uv, sprite, timber);
         }
     }
 
@@ -467,9 +531,13 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
      * density as the rest of the gate, so an edge shows a real slice of the timber it belongs to.
      */
     private static void emitQuads(PoseStack.Pose pose, VertexConsumer consumer, List<BakedQuad> quads,
-                                  int light, Shading shading, Projection uv, TextureAtlasSprite sprite) {
+                                  int light, Shading shading, Projection uv, TextureAtlasSprite sprite,
+                                  SpriteSwap timber) {
         for (BakedQuad quad : quads) {
             int[] data = quad.getVertices();
+            // Only the faces the swap was built for: a detail piece's ironwork names its own
+            // texture and is left exactly as authored.
+            SpriteSwap swap = timber != null && quad.getSprite() == timber.from() ? timber : null;
             Direction facing = quad.getDirection();
             Vec3i normal = facing.getNormal();
             float shade = shading.of(facing);
@@ -486,6 +554,10 @@ public class GateRenderer implements BlockEntityRenderer<GateBlockEntity> {
                 if (uv == null) {
                     u = Float.intBitsToFloat(data[base + 4]);
                     v = Float.intBitsToFloat(data[base + 5]);
+                    if (swap != null) {
+                        u = swap.u(u);
+                        v = swap.v(v);
+                    }
                 } else {
                     float pu = uv.u0() + x * uv.du();
                     float pv = uv.v0() + y * uv.dv();

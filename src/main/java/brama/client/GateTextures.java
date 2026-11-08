@@ -105,6 +105,24 @@ public final class GateTextures {
             return at(this.base);
         }
 
+        /**
+         * The family's <em>unsized</em> image: one block's worth of the material, rather than a
+         * picture of a whole gate.
+         *
+         * <p>Wanted by the detail pieces, whose models are authored against a single 16x16 tile and
+         * keep their own UVs. Painting a beam from the sized image of a 7x9 gate would shrink that
+         * entire picture onto one post.
+         */
+        public ResourceLocation baseSprite(int damage) {
+            for (int stage = Math.min(damage, GateSize.MAX_DAMAGE_STAGES - 1); stage >= 0; stage--) {
+                ResourceLocation unsized = at(stage(stage));
+                if (UNSIZED.contains(unsized)) {
+                    return unsized;
+                }
+            }
+            return at(this.base);
+        }
+
         private String stage(int damage) {
             return damage == 0 ? this.base : this.base + "_damage" + damage;
         }

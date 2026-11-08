@@ -207,6 +207,36 @@ def copy_family(source_dir, source_base, target_family):
             written["removed"] += 1
 
 
+def generate_unsized_textures():
+    """One block of each wood, as the family's unsized fallback image.
+
+    Two things want this. The fallback chain, for any size a pack has not drawn; and the detail
+    pieces -- a bascule's beams and counterweight -- whose models are authored against a single
+    16x16 tile and keep their own UVs. Those used to name the oak deck whatever wood the bridge was
+    built from, which put oak beams over a crimson bridge.
+
+    Cut from the middle cell of the 3x3 artwork for the same reason the loose blocks are: the middle
+    of a gate is plain planking, where the edges carry frames and ironwork.
+
+    Oak is skipped; its unsized images are original artwork.
+    """
+    if Image is None:
+        return
+
+    for wood_name, prefix, gate_family, deck_family, _tag in WOODS:
+        if not prefix:
+            continue
+        for family in (gate_family, deck_family):
+            for damage in range(ART_STAGES):
+                source = os.path.join(GATE_TEXTURES, "%s_3x3.png" % stage_name(family, damage))
+                if not os.path.isfile(source):
+                    continue
+                with Image.open(source) as sheet:
+                    cell = sheet.convert("RGBA").crop((16, 16, 32, 32))
+                    cell.save(os.path.join(GATE_TEXTURES, "%s.png" % stage_name(family, damage)))
+                    written["png"] += 1
+
+
 def generate_loose_textures():
     """One block of the gate, at native resolution, as the texture of a loose block.
 
@@ -377,6 +407,8 @@ def main():
         print("installing gate artwork")
         copy_gate_textures(args.gates, args.bridges)
     if not args.no_textures:
+        print("cutting unsized fallback textures")
+        generate_unsized_textures()
         print("cutting loose-block textures")
         generate_loose_textures()
 
