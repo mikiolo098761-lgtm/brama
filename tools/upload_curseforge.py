@@ -35,10 +35,14 @@ PROJECT_ID = 1675569
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# The three facets CurseForge wants a file tagged with, by the names it lists them under.
+# The facets CurseForge wants a file tagged with, by the names it lists them under. They all go
+# into one flat gameVersions list, though CurseForge groups them internally and rejects an upload
+# that misses a group it considers required -- the environment one especially, which is easy to
+# forget because nothing in the name suggests it is a "version" at all.
 GAME_VERSION = "1.20.1"
 MOD_LOADER = "Forge"
 JAVA_VERSION = "Java 17"
+ENVIRONMENTS = ["Client", "Server"]
 
 
 TOKEN_SHAPE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
@@ -158,7 +162,7 @@ def request(path, api_token, data=None, content_type=None):
 def version_ids(api_token):
     """Turns the three version names above into the numeric ids the upload wants."""
     versions = request("/game/versions", api_token)
-    wanted = {GAME_VERSION: None, MOD_LOADER: None, JAVA_VERSION: None}
+    wanted = {name: None for name in [GAME_VERSION, MOD_LOADER, JAVA_VERSION] + ENVIRONMENTS}
 
     for entry in versions:
         name = entry.get("name")
