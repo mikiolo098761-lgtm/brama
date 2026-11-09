@@ -8,7 +8,7 @@ or falls as a single piece.
 
 ---
 
-## Four kinds of gate
+## Four kinds of gate, eleven timbers
 
 **Medieval Gate** — a timber double gate. Two leaves hinged on the outer edges, swinging apart like a
 double door. Mineable with an axe.
@@ -22,6 +22,11 @@ a bridge has to lie somewhere its own doorway isn't.
 
 **Bascule Drawbridge** — the later design. Counterweighted beams pivot above the gateway and chain
 down to the deck's far corners, so beams and deck swing together as one linkage.
+
+The gate and both bridges come in **oak, spruce, birch, jungle, acacia, dark oak, mangrove, cherry,
+bamboo, crimson and warped**, each with its own artwork at every gate size and crafted from its own
+logs. Every wood is exactly as tough as every other — pick the one that suits the castle, not the one
+that survives longest.
 
 ---
 
@@ -52,6 +57,29 @@ type — and every block of it degrades together, so you can see how close a gat
 
 ---
 
+## Gates that watch their own gateway
+
+An enemy walks up to an open gate and it shuts in their face. Who counts as an enemy is answered in
+three steps, and it stops at the first answer:
+
+1. **Anyone who may open the gate never does** — the owner, co-owners, trusted players, trusted
+   scoreboard teams, and the owner's allies according to a claim mod.
+2. **Anyone on the owner's list always does** — `/gate enemy add <player>`, which covers every gate
+   you own rather than one doorway at a time.
+3. **Otherwise the claim mod decides** — standing inside the gate owner's claim without being a
+   member or an ally of it is enough.
+
+With no claim mod and nobody listed, nothing happens; a gate in the wilderness cannot tell an enemy
+from a passer-by. One config switch makes it treat everyone who cannot open it as hostile instead.
+
+**Claim mods:** FTB Chunks (with FTB Teams for alliances) and Open Parties and Claims are read
+through their own APIs, so an alliance signed in their menus opens gates straight away. Everything
+else that protects blocks — Flan, GriefPrevention ports, a server's own plugin — is covered by a
+generic probe that asks the question every protection mod already answers. None of it is a
+dependency, and the whole feature can be switched off.
+
+---
+
 ## Ownership
 
 Whoever assembles a gate owns it, and by default only they can open it.
@@ -63,11 +91,19 @@ Whoever assembles a gate owns it, and by default only they can open it.
 | `/gate trust team <team>` | Trust a whole scoreboard team |
 | `/gate op <player>` | Co-owner: can edit the trust list and disassemble |
 | `/gate unop <player>` | Remove a co-owner |
-| `/gate info` | Owner, co-owners, trusted players and teams |
+| `/gate info` | Owner, co-owners, trusted players and teams, footprint |
+| `/gate enemy add <player>` | Declare war: every gate you own shuts on them |
+| `/gate enemy remove <player>` | Call it off |
+| `/gate enemy list` | Who you are at war with |
 
-Every command applies to **the gate you are looking at** — no coordinates, no selection. Operators
-bypass the lot, at a configurable permission level. The whole system can be switched off if you'd
-rather gates stayed public.
+Every command except `/gate enemy` applies to **the gate you are looking at** — no coordinates, no
+selection.
+
+Operators bypass the lot, **in creative mode**. Permission level alone used to be enough, which made
+a moderator playing the server's own survival world a skeleton key: every locked gate on the map
+opened to them, and nothing told the owner. Creative mode is the mode you are in when you are
+administrating rather than playing. Both halves of that rule are configurable, and the whole
+ownership system can be switched off if you would rather gates stayed public.
 
 ---
 
@@ -87,7 +123,11 @@ Server-side and per-world, so it syncs to clients and travels with the save.
 protected and while vulnerable, and how long it takes to open.
 
 **Shared** — which sizes can be built, hammer durability, whether outside forces damage or dismantle
-gates, ownership rules, admin permission level, and how explosions are treated.
+gates, ownership rules, admin permission level, how explosions are treated, and everything the siege
+watch does: radius, sweep interval, which claim mod to ask, whether allies are trusted automatically,
+and whether defenders are warned.
+
+Every option is commented in the file itself, including why the defaults are what they are.
 
 ---
 
@@ -108,6 +148,8 @@ and the mapping follows whatever you build. Full documentation ships inside the 
 
 ## Recipes
 
+Each wood is crafted from its own logs — spruce gates from spruce logs, warped from warped stems.
+
 | Item | Cost | Makes |
 |---|---|---|
 | Medieval Gate | 6 logs + 3 iron | 4 |
@@ -118,3 +160,9 @@ and the mapping follows whatever you build. Full documentation ships inside the 
 
 Gates are built by the dozen, so blocks come four at a time — but a full castle gate is a serious
 investment, and a 7x9 portcullis is the most expensive thing in the mod by a distance.
+
+---
+
+## Open source
+
+MIT, at **https://github.com/mikiolo098761-lgtm/brama**. Issues and pull requests welcome.
