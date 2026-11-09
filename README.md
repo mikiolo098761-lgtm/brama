@@ -163,7 +163,14 @@ python tools/upload_curseforge.py            # --dry-run to see what it would se
 ```
 
 It asks for the API token at a prompt and does not echo it, so there is no quoting to get wrong and
-nothing lands in the shell's history. `CURSEFORGE_TOKEN` in the environment works too, for CI.
+nothing lands in the shell's history. If the console will not take a pasted password -- some Windows
+consoles silently drop Ctrl+V -- copy the token and pass `--token-clipboard`, or write it to a file
+and pass `--token-file`. `--check-token` says whether what arrived is the right shape and uploads
+nothing. `CURSEFORGE_TOKEN` in the environment works too, for CI.
+
+Note there are two different CurseForge keys. The **upload token** is a UUID from
+`legacy.curseforge.com/account/api-tokens`; the key from `console.curseforge.com` only reads the
+public catalogue and cannot publish anything.
 
 The changelog is read straight out of `CHANGELOG.md`, so that file is the one place a release is
 written up. A project's description and licence are web-only and still have to be edited by hand.
