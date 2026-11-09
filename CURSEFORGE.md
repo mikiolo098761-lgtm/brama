@@ -165,4 +165,5 @@ investment, and a 7x9 portcullis is the most expensive thing in the mod by a dis
 
 ## Open source
 
-MIT, at **https://github.com/mikiolo098761-lgtm/brama**. Issues and pull requests welcome.
+MIT, at [github.com/mikiolo098761-lgtm/brama](https://github.com/mikiolo098761-lgtm/brama).
+Issues and pull requests welcome.
