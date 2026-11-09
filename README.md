@@ -162,9 +162,11 @@ Edit the script, not its output. The wood list at the top of it must match `bram
 python tools/upload_curseforge.py            # --dry-run to see what it would send
 ```
 
+It asks for the API token at a prompt and does not echo it, so there is no quoting to get wrong and
+nothing lands in the shell's history. `CURSEFORGE_TOKEN` in the environment works too, for CI.
+
 The changelog is read straight out of `CHANGELOG.md`, so that file is the one place a release is
-written up. The token comes from `CURSEFORGE_TOKEN` in the environment and is never stored. A
-project's description and licence are web-only and still have to be edited by hand.
+written up. A project's description and licence are web-only and still have to be edited by hand.
 
 ---
 

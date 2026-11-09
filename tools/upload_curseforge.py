@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Uploads a built jar to the mod's CurseForge page, with the changelog taken from CHANGELOG.md.
 
-    $env:CURSEFORGE_TOKEN = '<token>'      # PowerShell
     python tools/upload_curseforge.py
 
-    export CURSEFORGE_TOKEN='<token>'      # bash
-    python3 tools/upload_curseforge.py
+and paste the token at the prompt. It is not echoed, and nothing writes it down. Setting
+CURSEFORGE_TOKEN in the environment works too, for CI; mind the quotes if that shell is PowerShell.
 
-Get a token from https://legacy.curseforge.com/account/api-tokens. It is read from the environment
-and never written anywhere: a CurseForge token can upload to every project on the account, so it has
-no business sitting in a repository, in a shell history or in a chat log.
+Get a token from https://legacy.curseforge.com/account/api-tokens. A CurseForge token can upload to
+every project on the account, so it has no business sitting in a repository, in a shell history or
+in a chat log. If one ever appears in any of those, delete it on that page and make another.
 
 What this can and cannot do. The upload API only adds files. A project's description, its licence
 and its name are web-only -- so the page still has to be edited by hand when those change, and this
@@ -20,6 +19,7 @@ is a release script that fails at the worst moment.
 """
 
 import argparse
+import getpass
 import json
 import mimetypes
 import os
@@ -40,11 +40,37 @@ MOD_LOADER = "Forge"
 JAVA_VERSION = "Java 17"
 
 
+TOKEN_SHAPE = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+                         r"[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+
+
 def token():
+    """The API token, from the environment or, failing that, typed in without being echoed.
+
+    The prompt is the better of the two and the reason is PowerShell. A token is a UUID, and an
+    unquoted UUID on a PowerShell line is not a string -- the shell reads the leading digits as a
+    command and tries to run it, so the variable is never set and the script goes on to send
+    whatever was there before. Typing it at a prompt has no quoting to get wrong, and leaves the
+    token out of the shell's history as well.
+    """
     value = os.environ.get("CURSEFORGE_TOKEN", "").strip()
+    source = "CURSEFORGE_TOKEN"
+
     if not value:
-        sys.exit("CURSEFORGE_TOKEN is not set. Get one from "
-                 "https://legacy.curseforge.com/account/api-tokens and set it in this shell.")
+        try:
+            value = getpass.getpass("CurseForge API token (not shown as you type): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            sys.exit("\nNo token given.")
+        source = "the prompt"
+
+    if not value or value.upper() in {"TWOJ_TOKEN", "YOUR_TOKEN", "<TOKEN>"}:
+        sys.exit("That is the placeholder, not a token. Get a real one from "
+                 "https://legacy.curseforge.com/account/api-tokens")
+
+    if not TOKEN_SHAPE.match(value):
+        print("warning: the token from %s does not look like a CurseForge token, which is a UUID "
+              "such as 0123abcd-4567-89ef-0123-456789abcdef." % source)
+        print("         In PowerShell, quote it: $env:CURSEFORGE_TOKEN = 'your-token'")
     return value
 
 
